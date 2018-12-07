@@ -22,6 +22,13 @@ for row in tables[0].rows:
             system_og_currency['{System}'.format(**row)] = key
 
 print(system_og_currency)
+
+    #strip alphabetical characters
+
+    a = '{Fare rate}'.format(**row)
+    result = re.findall(r"[-+]?\d*\.\d+|\d+", a)
+    print result
+    
 #Treating Ratios
 
 #Treating Fare System
