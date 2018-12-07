@@ -23,7 +23,12 @@ for row in tables[0].rows:
     for value in currency.itervalues():
         if raw_rate.find(value) != -1:
             system_og_currency['{System}'.format(**row)] = curr2[value]
+            
+            a = '{Fare rate}'.format(**row)
+            result = re.findall(r"[-+]?\d*\.\d+|\d+", a)
+            print result
 
+print(system_og_currency)
 #Treating Ratios
 for row in tables[0].rows:
     raw_ratio = '{Ratio}'.format(**row)
