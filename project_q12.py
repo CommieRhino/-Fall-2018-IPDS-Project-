@@ -27,6 +27,17 @@ for row in tables[0].rows:
 a = '{Fare rate}'.format(**row)
 result = re.findall(r"[-+]?\d*\.\d+|\d+", a)
 
+scores = [10, 12, 43, 65]
+
+def SumScores(scores):
+    running_sum = 0
+    for score in scores:
+        running_sum += score
+    return (1.0 * running_sum)
+
+def AvgScores(scores):
+    return SumScores(scores)/len(scores)
+
 #Treating Ratios
 for row in tables[0].rows:
     raw_ratio = '{Ratio}'.format(**row)
