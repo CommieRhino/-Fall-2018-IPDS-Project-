@@ -22,14 +22,10 @@ for row in tables[0].rows:
             system_og_currency['{System}'.format(**row)] = key
 
 print(system_og_currency)
-
-    #strip alphabetical characters
-
-    a = '{Fare rate}'.format(**row)
-    result = re.findall(r"[-+]?\d*\.\d+|\d+", a)
-    print result
-    
 #Treating Ratios
+for row in tables[0].rows:
+    raw_ratio = '{Ratio}'.format(**row)
+    clean_ratio = raw_ratio.rstrip('%')
 
 #Treating Fare System
 
@@ -39,17 +35,16 @@ for row in tables[0].rows:
     system_continent['{System}'.format(**row)] = '{Continent}'.format(**row)
 
 system_country = {}
-
+for row in tables[0].rows:
+    system_country['{System}'.format(**row)] = '{Country}'.format(**row)
+    
 system_rate = {}
 for row in tables[0].rows:
     system_rate['{System}'.format(**row)] = '{Fare rate}'.format(**row)
 
 system_ratio = {}
 for row in tables[0].rows:
-    raw_ratio = '{Ratio}'.format(**row)
-    clean_ratio = raw_ratio.rstrip('%')
-    system_ratio['{System}'.format(**row)] = clean_ratio
-    #print(clean_ratio)
+    system_ratio['{System}'.format(**row)] = clean_ratio 
 
 #Merging Dictionaries
 def dict_zip(*dicts, **kwargs):
@@ -57,6 +52,6 @@ def dict_zip(*dicts, **kwargs):
     all_keys = {k for d in dicts for k in d.keys()}
     return {k: [d.get(k, fillvalue) for d in dicts] for k in all_keys}
 
-#Print(dict_zip(system_rate, system_ratio))
+print(dict_zip(system_rate, system_ratio))
 
 #Export to DataFrame and SQL Database
