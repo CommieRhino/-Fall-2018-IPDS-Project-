@@ -10,7 +10,10 @@ t = tables
 
 #Treating Fare Rates
 currency = {'HKD': 'HK$', 'YEN': '\xc2\xa5', 'PKR': 'PKR', 'NTD': 'NT$', 'SGD': 'SGD', 'EUR': '\xe2\x82\xac', 'CZK': 'CZK', 'SEK': 'SEK', 'CHF': 'CHF', 'USD': 'US$', 'CAN': 'C$', 'AUD': 'A$'}
-
+curr2 = {}
+for key in currency.iterkeys():
+    curr2[currency[key]] = key
+    
 system_og_currency = {}
 for row in tables[0].rows:
     raw_rate = '{Fare rate}'.format(**row)
@@ -19,13 +22,14 @@ for row in tables[0].rows:
             system_og_currency['{System}'.format(**row)] = key
     for value in currency.itervalues():
         if raw_rate.find(value) != -1:
-            system_og_currency['{System}'.format(**row)] = key
+            system_og_currency['{System}'.format(**row)] = curr2[value]
 
 print(system_og_currency)
 #Treating Ratios
 for row in tables[0].rows:
     raw_ratio = '{Ratio}'.format(**row)
-    clean_ratio = raw_ratio.rstrip('%')
+    pos = raw_ratio.find('%')
+    clean_ratio = raw_ratio[:pos]
 
 #Treating Fare System
 
