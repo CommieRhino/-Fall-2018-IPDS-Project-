@@ -5,6 +5,8 @@
 from wikitables import import_tables
 from currency_converter import CurrencyConverter as c
 import pandas as pd
+import re
+
 tables = import_tables('Farebox recovery ratio')
 t = tables
 
@@ -13,7 +15,11 @@ currency = {'HKD': 'HK$', 'YEN': '\xc2\xa5', 'PKR': 'PKR', 'NTD': 'NT$', 'SGD': 
 curr2 = {}
 for key in currency.iterkeys():
     curr2[currency[key]] = key
-    
+
+for row in tables[0].rows:
+    a = '{Fare rate}'.format(**row)
+    raw_rates = re.findall(r"[-+]?\d*\.\d+|\d+", a)
+
 system_og_currency = {}
 for row in tables[0].rows:
     raw_rate = '{Fare rate}'.format(**row)
@@ -24,19 +30,6 @@ for row in tables[0].rows:
         if raw_rate.find(value) != -1:
             system_og_currency['{System}'.format(**row)] = curr2[value]
             
-a = '{Fare rate}'.format(**row)
-result = re.findall(r"[-+]?\d*\.\d+|\d+", a)
-
-scores = [10, 12, 43, 65]
-
-def SumScores(scores):
-    running_sum = 0
-    for score in scores:
-        running_sum += score
-    return (1.0 * running_sum)
-
-def AvgScores(scores):
-    return SumScores(scores)/len(scores)
 
 #Treating Ratios
 for row in tables[0].rows:
