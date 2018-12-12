@@ -30,6 +30,11 @@ for row in tables[0].rows:
         if raw_rate.find(value) != -1:
             system_og_currency['{System}'.format(**row)] = curr2[value]
             
+convert_cur= {}
+for row in tables[0].rows:
+    a = '{Fare rate}'.format(**row)
+    raw_values = re.findall(r"[-+]?\d*\.\d+|\d+", a)
+    convert_cur['{System}'.format(**row)] = raw_values[0:1] #dictionary {system: currency code, rate}
 
 #Treating Ratios
 for row in tables[0].rows:
