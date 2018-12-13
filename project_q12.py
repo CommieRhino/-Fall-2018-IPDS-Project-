@@ -11,30 +11,46 @@ tables = import_tables('Farebox recovery ratio')
 t = tables
 
 #Treating Fare Rates
-currency = {'HKD': 'HK$', 'YEN': '\xc2\xa5', 'PKR': 'PKR', 'NTD': 'NT$', 'SGD': 'SGD', 'EUR': '\xe2\x82\xac', 'CZK': 'CZK', 'SEK': 'SEK', 'CHF': 'CHF', 'USD': 'US$', 'CAN': 'C$', 'AUD': 'A$'}
+currency = {'HKD': 'HK$', 'JPY': '\xc2\xa5', 'PKR': 'Rs', 'NTD': 'NT$', 'SGD': 'SG$', 'EUR': '\xe2\x82\xac', 'CZK': 'Kc', 'SEK': 'SEK', 'CHF': 'SFr.', 'USD': 'US', 'CAD': 'C$', 'AUD': 'A$'}
 curr2 = {}
 for key in currency.iterkeys():
     curr2[currency[key]] = key
 
-for row in tables[0].rows:
-    a = '{Fare rate}'.format(**row)
-    raw_rates = re.findall(r"[-+]?\d*\.\d+|\d+", a)
+def parse(row):
+    key = ('{System}'.format(**row))
+    if key.find('\xe2\x80\x93') != -1:
+        key = key.replace('\xe2\x80\x93', '-')
+    return key
 
-system_og_currency = {}
+system_currency = {}
+
 for row in tables[0].rows:
     raw_rate = '{Fare rate}'.format(**row)
     for key in currency.iterkeys():
         if raw_rate.find(key) != -1:
-            system_og_currency['{System}'.format(**row)] = key
+            system_currency[parse(row)] = key
     for value in currency.itervalues():
         if raw_rate.find(value) != -1:
-            system_og_currency['{System}'.format(**row)] = curr2[value]
-            
-convert_cur= {}
+            system_currency[parse(row)] = curr2[value]
+
+system_rate = {}
 for row in tables[0].rows:
-    a = '{Fare rate}'.format(**row)
-    raw_values = re.findall(r"[-+]?\d*\.\d+|\d+", a)
-    convert_cur['{System}'.format(**row)] = raw_values[0:1] #dictionary {system: currency code, rate}
+    raw_rate = '{Fare rate}'.format(**row)
+    system_rates = re.findall(r"[-+]?\d*\.\d+|\d+", raw_rate)
+    key = parse(row)
+    if not system_rates:
+        system_rate[key] = "N/A"
+    else:
+        system_rate[key] = system_rates[0]
+
+system_rate_currency = dz(system_rate, system_currency)
+
+clean_rate = {}
+for key, value in system_rate_currency.items():
+    if value[0] == "N/A" or value[1] is None:
+        clean_rate[key] = "N/A"
+    else:
+        clean_rate[key] = round(c.convert(value[0], value[1], 'USD'),2)
 
 #Treating Ratios
 for row in tables[0].rows:
