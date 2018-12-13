@@ -13,6 +13,11 @@ c = CurrencyConverter('./eurofxref-hist.csv')
 tables = import_tables('Farebox recovery ratio')
 t = tables
 
+def dict_zip(*dicts, **kwargs):
+    fillvalue = kwargs.get('fillvalue', None)
+    all_keys = {k for d in dicts for k in d.keys()}
+    return {k: [d.get(k, fillvalue) for d in dicts] for k in all_keys}
+
 #Treating Fare Rates
 currency = {'HKD': 'HK$', 'JPY': '\xc2\xa5', 'PKR': 'Rs', 'NTD': 'NT$', 'SGD': 'SG$', 'EUR': '\xe2\x82\xac', 'CZK': 'Kc', 'SEK': 'SEK', 'CHF': 'SFr.', 'USD': 'US', 'CAD': 'C$', 'AUD': 'A$'}
 curr2 = {}
@@ -81,12 +86,7 @@ for row in tables[0].rows:
     system_ratio[parse(row)] = clean_ratio 
 
 #Merging Dictionaries
-def dict_zip(*dicts, **kwargs):
-    fillvalue = kwargs.get('fillvalue', None)
-    all_keys = {k for d in dicts for k in d.keys()}
-    return {k: [d.get(k, fillvalue) for d in dicts] for k in all_keys}
-
-print(dict_zip(system_rate, system_ratio))
+print(dict_zip(system_continent, system_country, system_rate, system_ratio))
 
 #Export to DataFrame and SQL Database
 
