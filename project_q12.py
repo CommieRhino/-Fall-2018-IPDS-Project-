@@ -86,3 +86,14 @@ def dict_zip(*dicts, **kwargs):
 print(dict_zip(system_rate, system_ratio))
 
 #Export to DataFrame and SQL Database
+
+
+#From SQL to RStudio 
+con = dbconnect(drv=SQLite(), dbname=“rates.db”)
+df.ratios <- dbGetQuery(con, “SELECT * FROM systems”)
+df.summary <- dbGetQuery(con, “SELECT AVG(ratio) AS avg_ratio FROM systems GROUP BY continent”) #example
+
+ggplot(data= df.ratios, aes(x=ratio)) +
+	geom_density() + 
+	geom_vline(intercept = mean(df.ratios
+
