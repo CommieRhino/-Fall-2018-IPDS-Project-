@@ -3,9 +3,12 @@
 #pip install currencyconverter -- user
 
 from wikitables import import_tables
-from currency_converter import CurrencyConverter as c
-import pandas as pd
+from pandas import pandas as pd
+from pandas import DataFrame as df
 import re
+import sqlite3
+from currency_converter import CurrencyConverter
+c = CurrencyConverter('./eurofxref-hist.csv')
 
 tables = import_tables('Farebox recovery ratio')
 t = tables
