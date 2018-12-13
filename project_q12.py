@@ -66,19 +66,19 @@ for row in tables[0].rows:
 #Creating Individual Dictionaries
 system_continent = {}
 for row in tables[0].rows:
-    system_continent['{System}'.format(**row)] = '{Continent}'.format(**row)
+    system_continent[parse(row)] = '{Continent}'.format(**row)
 
 system_country = {}
 for row in tables[0].rows:
-    system_country['{System}'.format(**row)] = '{Country}'.format(**row)
+    system_country[parse(row)] = '{Country}'.format(**row)
     
 system_rate = {}
 for row in tables[0].rows:
-    system_rate['{System}'.format(**row)] = '{Fare rate}'.format(**row)
+    system_rate[parse(row)] = clean_rate 
 
 system_ratio = {}
 for row in tables[0].rows:
-    system_ratio['{System}'.format(**row)] = clean_ratio 
+    system_ratio[parse(row)] = clean_ratio 
 
 #Merging Dictionaries
 def dict_zip(*dicts, **kwargs):
