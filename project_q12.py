@@ -61,10 +61,12 @@ for key, value in system_rate_currency.items():
         clean_rate[key] = round(c.convert(value[0], value[1], 'USD'),2)
 
 #Treating Ratios
+system_ratio = {}
 for row in tables[0].rows:
     raw_ratio = '{Ratio}'.format(**row)
     pos = raw_ratio.find('%')
     clean_ratio = raw_ratio[:pos]
+    system_ratio[('{System}'.format(**row))] = clean_ratio
 
 #Treating Fare System
 system_faresystem= {}
