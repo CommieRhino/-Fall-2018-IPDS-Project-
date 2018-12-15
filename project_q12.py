@@ -12,13 +12,12 @@ c = CurrencyConverter('./eurofxref-hist.csv')
 tables = import_tables('Farebox recovery ratio')
 t = tables
 
-#Merging Dictionaries
+#Treating Fare Rates
 def dz(*dicts, **kwargs):
     fillvalue = kwargs.get('fillvalue', None)
     all_keys = {k for d in dicts for k in d.keys()}
     return {k: [d.get(k, fillvalue) for d in dicts] for k in all_keys}
 
-#Treating Fare Rates
 currency = {'HKD': 'HK$', 'JPY': '\xc2\xa5', 'PKR': 'Rs', 'NTD': 'NT$', 'SGD': 'SG$', 'EUR': '\xe2\x82\xac', 'CZK': 'Kc', 'SEK': 'SEK', 'CHF': 'SFr.', 'USD': 'US', 'CAD': 'C$', 'AUD': 'A$'}
 curr2 = {}
 for key in currency.iterkeys():
@@ -88,21 +87,17 @@ for row in tables[0].rows:
     system_faresystem.update({'Greater Seattle Area (King County Metro)': 'variable rate'})
     system_faresystem.update({'Amtrak': 'variable rate'})
 
-#Creating Individual Dictionaries for Other Attributes
+#Treating continent
 system_continent = {}
 for row in tables[0].rows:
     system_continent[parse(row)] = '{Continent}'.format(**row)
 
+#Treating country
 system_country = {}
 for row in tables[0].rows:
     system_country[parse(row)] = '{Country}'.format(**row)
 
-#Merging Dictionaries
-merged1 = dz(system_rate, system_continent)
-merged2 = dz(merged1, system_country)
-merged3 = dz(merged2, system_ratio)
-merged4 = dz(merged3, clean_rate)
-
+#Merging Dictionaries with the same key
 ds = [clean_rate, system_ratio, system_continent, system_country, system_faresystem]
 db = {}
 for k in clean_rate.iterkeys():
