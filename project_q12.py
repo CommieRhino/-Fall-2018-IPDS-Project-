@@ -9,11 +9,11 @@ import re
 import sqlite3
 from currency_converter import CurrencyConverter
 c = CurrencyConverter('./eurofxref-hist.csv')
-
 tables = import_tables('Farebox recovery ratio')
 t = tables
 
-def dict_zip(*dicts, **kwargs):
+#Merging Dictionaries
+def dz(*dicts, **kwargs):
     fillvalue = kwargs.get('fillvalue', None)
     all_keys = {k for d in dicts for k in d.keys()}
     return {k: [d.get(k, fillvalue) for d in dicts] for k in all_keys}
