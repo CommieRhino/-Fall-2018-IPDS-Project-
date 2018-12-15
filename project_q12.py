@@ -103,6 +103,12 @@ merged2 = dz(merged1, system_country)
 merged3 = dz(merged2, system_ratio)
 merged4 = dz(merged3, clean_rate)
 
+ds = [system_rate, system_ratio, system_continent, system_country, system_faresystem]
+d = {}
+for k in system_rate.iterkeys():
+    d[k] = tuple(d[k] for d in ds)
+
+
 #Export to DataFrame and SQL Database
 
 
