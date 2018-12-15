@@ -87,29 +87,22 @@ for row in tables[0].rows:
     system_faresystem.update({'Greater Seattle Area (King County Metro)': 'variable rate'})
     system_faresystem.update({'Amtrak': 'variable rate'})
 
-#Treating continent
+#Creating Individual Dictionaries for Other Attributes
 system_continent = {}
 for row in tables[0].rows:
     system_continent[parse(row)] = '{Continent}'.format(**row)
 
-#Treating country
 system_country = {}
 for row in tables[0].rows:
     system_country[parse(row)] = '{Country}'.format(**row)
 
-#Merging Dictionaries with the same key
-ds = [clean_rate, system_ratio, system_continent, system_country, system_faresystem]
+#Export to DataFrame and SQL Database
+ds = [system_continent, system_country, system_ratio, system_faresystem, clean_rate]
 db = {}
 for k in clean_rate.iterkeys():
     db[k] = tuple(d[k] for d in ds)
 
-
-#Export to DataFrame and SQL Database
-
-
-#From SQL to RStudio 
 farebox = sqlite3.connect('mydb.db')
-data = df.from_dict(db, orient='index', dtype=None)
+data = df.from_dict(db, orient='index', dtype=None, columns = ['Continent', 'Country', 'Farebox Ratio', 'Fare System', 'Fare Rate in USD'])
 data.to_sql("FareBox", farebox, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
 print(data)
-
