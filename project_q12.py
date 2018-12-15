@@ -86,7 +86,7 @@ for row in tables[0].rows:
     system_faresystem.update({'Greater Seattle Area (King County Metro)': 'variable rate'})
     system_faresystem.update({'Amtrak': 'variable rate'})
 
-#Creating Individual Dictionaries
+#Creating Individual Dictionaries for Other Attributes
 system_continent = {}
 for row in tables[0].rows:
     system_continent[parse(row)] = '{Continent}'.format(**row)
@@ -94,17 +94,12 @@ for row in tables[0].rows:
 system_country = {}
 for row in tables[0].rows:
     system_country[parse(row)] = '{Country}'.format(**row)
-    
-system_rate = {}
-for row in tables[0].rows:
-    system_rate[parse(row)] = clean_rate 
-
-system_ratio = {}
-for row in tables[0].rows:
-    system_ratio[parse(row)] = clean_ratio 
 
 #Merging Dictionaries
-print(dict_zip(system_continent, system_country, system_rate, system_ratio))
+merged1 = dz(system_rate, system_continent)
+merged2 = dz(merged1, system_country)
+merged3 = dz(merged2, system_ratio)
+merged4 = dz(merged3, clean_rate)
 
 #Export to DataFrame and SQL Database
 
