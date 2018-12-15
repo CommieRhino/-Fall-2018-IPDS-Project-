@@ -86,6 +86,10 @@ for row in tables[0].rows:
     system_faresystem.update({'Melbourne': 'variable rate'})
     system_faresystem.update({'Greater Seattle Area (King County Metro)': 'variable rate'})
     system_faresystem.update({'Amtrak': 'variable rate'})
+    system_faresystem.update({'Brussels': 'no data'})
+    system_faresystem.update({'Milan': 'no data'})
+    system_faresystem.update({'Madrid': 'no data'})
+    system_faresystem.update({'Rome': 'no data'})
 
 #Creating Individual Dictionaries for Other Attributes
 system_system = {}
