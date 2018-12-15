@@ -107,5 +107,5 @@ for k in clean_rate.iterkeys():
 
 #Export to DataFrame and SQL Database
 farebox = sqlite3.connect('mydb.db')
-data = df.from_dict(db, orient='index', dtype=None, columns = ['System', 'Continent', 'Country', 'Farebox Ratio', 'Fare System', 'Fare Rate in USD'])
+data = df.from_dict(db, orient='index', dtype=None, columns = ['System', 'Continent', 'Country', 'Farebox_Ratio', 'Fare_System', 'Fare_Rate_USD'])
 data.to_sql("FareBox", farebox, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
