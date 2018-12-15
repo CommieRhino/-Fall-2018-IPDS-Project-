@@ -67,6 +67,24 @@ for row in tables[0].rows:
     clean_ratio = raw_ratio[:pos]
 
 #Treating Fare System
+system_faresystem= {}
+for row in tables[0].rows:
+    raw_fare_system = '{Fare system}'.format(**row)
+    b = [str.lower() for str in raw_fare_system]
+    fare_system = "".join(b)
+    system_faresystem['{System}'.format(**row)] = fare_system
+    system_faresystem.update({'Paris (STIF)': 'variable rate'})
+    system_faresystem.update({'Washington, DC (WMATA)': 'variable rate'})
+    system_faresystem.update({'VIA Rail': 'variable rate'})
+    system_faresystem.update({'Helsinki': 'zone based'})
+    system_faresystem.update({'Vancouver TransLink': 'zone based'})
+    system_faresystem.update({'Puget Sound Region (Sound Transit)': 'variable rate'})
+    system_faresystem.update({'Minneapolis - St. Paul': 'flat rate'})
+    system_faresystem.update({'Maryland': 'variable rate'})
+    system_faresystem.update({'Santa Clara County (VTA)': 'variable rate'})
+    system_faresystem.update({'Melbourne': 'variable rate'})
+    system_faresystem.update({'Greater Seattle Area (King County Metro)': 'variable rate'})
+    system_faresystem.update({'Amtrak': 'variable rate'})
 
 #Creating Individual Dictionaries
 system_continent = {}
