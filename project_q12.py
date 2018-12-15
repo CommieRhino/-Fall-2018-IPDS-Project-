@@ -103,21 +103,18 @@ merged2 = dz(merged1, system_country)
 merged3 = dz(merged2, system_ratio)
 merged4 = dz(merged3, clean_rate)
 
-ds = [system_rate, system_ratio, system_continent, system_country, system_faresystem]
-d = {}
-for k in system_rate.iterkeys():
-    d[k] = tuple(d[k] for d in ds)
+ds = [clean_rate, system_ratio, system_continent, system_country, system_faresystem]
+db = {}
+for k in clean_rate.iterkeys():
+    db[k] = tuple(d[k] for d in ds)
 
 
 #Export to DataFrame and SQL Database
 
 
 #From SQL to RStudio 
-con = dbconnect(drv=SQLite(), dbname=“rates.db”)
-df.ratios <- dbGetQuery(con, “SELECT * FROM systems”)
-df.summary <- dbGetQuery(con, “SELECT AVG(ratio) AS avg_ratio FROM systems GROUP BY continent”) #example
-
-ggplot(data= df.ratios, aes(x=ratio)) +
-	geom_density() + 
-	geom_vline(intercept = mean(df.ratios
+farebox = sqlite3.connect('mydb.db')
+data = df.from_dict(db, orient='index', dtype=None)
+data.to_sql("FareBox", farebox, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+print(data)
 
